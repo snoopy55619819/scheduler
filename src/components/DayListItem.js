@@ -13,12 +13,8 @@ export default function DayListItem({name, spots, selected, setDay}) {
     return `${spots ? spots : 'no'} spot${spots === 1 ? "" : "s"} remaining`;
   }
 
-  const handleClick = () => {
-    return setDay(name)
-  }
-
   return(
-    <li onClick={handleClick}
+    <li onClick={setDay}
       className={dayListItemClass}
     >
       <h2 className="text--regular">{name}</h2>
