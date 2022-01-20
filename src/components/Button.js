@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import "components/Button.scss";
-import { action } from "@storybook/addon-actions";
+// import { action } from "@storybook/addon-actions";
 import classNames from "classnames";
 
 export default function Button({confirm, danger, onClick, disabled, children}) {
