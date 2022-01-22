@@ -4,14 +4,11 @@ import axios from "axios";
 import "components/Application.scss";
 import Appointment from "./Appointment";
 import DayList from "./DayList";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors";
 
 export default function Application(props) {
-  // const [day, setDay] = useState("Monday");
-  // const [days, setDays] = useState([]);
-  // const [appointment, setAppointment] = useState({});
-  
-  // Merge all stqates into one object
+
+  // Merge all states into one object
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -21,7 +18,6 @@ export default function Application(props) {
 
   // Create seperate functions for each state setter to mimic having seperate useState for each.
   const setDay = day => setState(prev => ({...prev, day }));
-  const setDays = days => setState(prev => ({...prev, days}));
 
   // API requests to change state of days, appointments and interviews on page load:
   //  '/api/days'         --> setState.days         ->  [ { id, name, appointments, interviewers, spots } ]
@@ -42,9 +38,12 @@ export default function Application(props) {
       })
       .catch(err => console.log(err));
   }, [])
-console.log(state);
+
+  
   // parse appointments to make array of appointment components with required props
+  const interviewers = getInterviewersForDay(state, state.day);
   const displayAppointments = getAppointmentsForDay(state, state.day);
+  
   const schedule = displayAppointments.map(currAppointment => {
     const interview = getInterview(state, currAppointment.interview);
 
@@ -53,6 +52,7 @@ console.log(state);
       id={currAppointment.id}
       time={currAppointment.time}
       interview={interview}
+      interviewers={interviewers}
     />
   });
 
