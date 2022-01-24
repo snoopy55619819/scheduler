@@ -53,8 +53,14 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    // update state with new appointments data
-    setState({...state, appointments})
+    // Add appointment to API and update state with new appointments data
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then(res => {
+        console.log(res);
+        setState({...state, appointments});
+      })
+      .catch(err => console.log(err));
+      
   }
   
   // parse appointments to make array of appointment components with required props
