@@ -39,6 +39,23 @@ export default function Application(props) {
       .catch(err => console.log(err));
   }, [])
 
+  // bookInterview to save new interview to appointments when created
+  function bookInterview(id, interview) {
+    // create copy
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    // copy appointments and update appointment with new interview
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    // update state with new appointments data
+    setState({...state, appointments})
+  }
   
   // parse appointments to make array of appointment components with required props
   const interviewers = getInterviewersForDay(state, state.day);
@@ -53,6 +70,7 @@ export default function Application(props) {
       time={currAppointment.time}
       interview={interview}
       interviewers={interviewers}
+      bookInterview={bookInterview}
     />
   });
 

@@ -6,12 +6,21 @@ import Empty from "./Empty";
 import Form from "./Form";
 import useVisualMode from "hooks/useVisualMode";
 
-export default function Appointment({ time, interview, interviewers }) {
+export default function Appointment({ id, time, interview, interviewers, bookInterview }) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   
   let { mode, transition, back } = useVisualMode((interview ? SHOW : EMPTY));
+
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    bookInterview(id, interview);
+    transition(SHOW);
+  }
 
   return (
     <article className="appointment">
@@ -28,6 +37,7 @@ export default function Appointment({ time, interview, interviewers }) {
         <Form 
           interviewers={interviewers}
           onCancel={() => back()}
+          onSave={save}
         />
       }
       
