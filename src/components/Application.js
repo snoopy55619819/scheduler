@@ -55,12 +55,30 @@ export default function Application(props) {
 
     // Add appointment to API and update state with new appointments data
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then(res => {
-        console.log(res);
+      .then(() => {
         setState({...state, appointments});
       })
       .catch(err => console.log(err));
       
+  }
+
+  // delete interviews
+  function cancelInterview(id) {
+
+    return axios.delete(`/api/appointments/${id}`)
+      .then(() => {
+        const appointment = {
+          ...state.appointments[id],
+          interview: null
+        };
+        
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment
+        }
+        setState({...state, appointments})
+      })
+      .catch(err => console.log(err));
   }
   
   // parse appointments to make array of appointment components with required props
@@ -77,6 +95,7 @@ export default function Application(props) {
       interview={interview}
       interviewers={interviewers}
       bookInterview={bookInterview}
+      cancelInterview={cancelInterview}
     />
   });
 
