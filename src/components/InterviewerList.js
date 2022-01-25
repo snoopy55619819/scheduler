@@ -1,8 +1,9 @@
 import React from "react";
 import "components/InterviewerList.scss";
 import InterviewerListItem from "./InterviewerListItem";
+import PropTypes from 'prop-types';
 
-export default function InterviewerList({ interviewers, value, onChange }) {
+function InterviewerList({ interviewers, value, onChange }) {
   const parsedInterviewers = interviewers.map(currInterviewer => {
     return <InterviewerListItem
       key={currInterviewer.id}
@@ -22,3 +23,11 @@ export default function InterviewerList({ interviewers, value, onChange }) {
     </section>
   );
 }
+
+// Use propTypes library for testing prop input types. Browser console outputs
+//  an error warning message of type mismatch from expected.
+InterviewerList.propTypes = {
+  interviewers: PropTypes.array.isRequired
+}
+
+export default InterviewerList;
