@@ -19,7 +19,7 @@ export default function Show({ id, student, interviewer, onEdit, onDelete }) {
             alt="Edit"
           />
           <img
-            onClick={() => onDelete(id)}
+            onClick={onDelete}
             className="appointment__actions-button"
             src="images/trash.png"
             alt="Delete"
