@@ -26,6 +26,7 @@ function InterviewerList({ interviewers, value, onChange }) {
 
 // Use propTypes library for testing prop input types. Browser console outputs
 //  an error warning message of type mismatch from expected.
+//  TypeScript or Flow is an alternative and more widely used.
 InterviewerList.propTypes = {
   interviewers: PropTypes.array.isRequired
 }
