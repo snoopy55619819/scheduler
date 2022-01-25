@@ -10,7 +10,7 @@ export default function useApplicationData() {
     interviewers: {}
   })
 
-  // Create seperate functions for each state setter to mimic having seperate useState for each.
+  // Create seperate functions for state setter to mimic having seperate useState.
   const setDay = day => setState(prev => ({...prev, day }));
 
   // API requests to change state of days, appointments and interviews on page load:
@@ -30,45 +30,56 @@ export default function useApplicationData() {
         
         setState(prev => ({...prev, days: daysData, appointments: appointmentsData, interviewers: interviewersData}))
       })
-  }, [])
+    }, [])
 
-    // bookInterview to save new interview to appointments when created
-    function bookInterview(id, interview) {
-      // create copy
-      const appointment = {
-        ...state.appointments[id],
-        interview: { ...interview }
-      };
+  // bookInterview to save new interview to appointments when created
+  function bookInterview(id, interview) {
+    // create copy
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    // copy appointments and update appointment with new interview
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    // Add appointment to API and update state with new appointments data
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then(() => {
+        
+        // Update spots count for daysList when an appointment is booked.
+        const updatedDays = state.days.map(day => {
+          return {...day, spots: (day.name === state.day ? day.spots - 1 : day.spots)}
+        });
+
+        setState({...state, appointments, days: updatedDays});
+      })
+  }
   
-      // copy appointments and update appointment with new interview
-      const appointments = {
-        ...state.appointments,
-        [id]: appointment
-      };
-  
-      // Add appointment to API and update state with new appointments data
-      return axios.put(`/api/appointments/${id}`, appointment)
-        .then(() => {
-          setState({...state, appointments});
-        })
-    }
-  
-    // delete interviews
-    function cancelInterview(id) {
-  
-      return axios.delete(`/api/appointments/${id}`)
-        .then(() => {
-          const appointment = {
-            ...state.appointments[id],
-            interview: null
-          };
-          const appointments = {
-            ...state.appointments,
-            [id]: appointment
-          }
-          setState({...state, appointments})
-        })
-    }
+  // delete interviews
+  function cancelInterview(id) {
+
+    return axios.delete(`/api/appointments/${id}`)
+      .then(() => {
+        const appointment = {
+          ...state.appointments[id],
+          interview: null
+        };
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment
+        }
+        // Update spots count for days list when an appointment is cancelled.
+        const updatedDays = state.days.map(day => {
+          return {...day, spots: (day.name === state.day ? day.spots + 1 : day.spots)}
+        });
+
+        setState({...state, appointments, days: updatedDays})
+      })
+  }
 
   return {
     state,
