@@ -8,6 +8,7 @@ export default function Empty({ onAdd }) {
         className="appointment__add-button"
         src="images/add.png"
         alt="Add"
+        data-testimg
       />
     </main>
   );

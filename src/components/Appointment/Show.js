@@ -17,12 +17,14 @@ export default function Show({ id, student, interviewer, onEdit, onDelete }) {
             className="appointment__actions-button"
             src="images/edit.png"
             alt="Edit"
+            data-testid="editImg"
           />
           <img
             onClick={onDelete}
             className="appointment__actions-button"
             src="images/trash.png"
             alt="Delete"
+            data-testid="deleteImg"
           />
         </section>
       </section>
