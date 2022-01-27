@@ -1,39 +1,39 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:10.16
-
-    working_directory: ~/client
-
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm test
-
-deploy:
-  machine:
-    enabled: true
+build:
+  docker:
+    - image: circleci/node:10.16
 
   working_directory: ~/client
 
   steps:
-    - add_ssh_keys:
-        fingerprints:
-          - "fc:27:01:c9:85:90:2f:d2:19:cc:d3:8d:7f:83:e9:09"
     - checkout
-    - run:
-        name: Push Master to Production
-        command: |
-          git push https://github.com/snoopy55619819/scheduler master:production
+    - restore_cache:
+        keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+    - run: npm install
+    - save_cache:
+        paths:
+          - node_modules
+        key: v1-dependencies-{{ checksum "package.json" }}
+    - run: npm test
+
+  deploy:
+    machine:
+      enabled: true
+
+    working_directory: ~/client
+
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "fc:27:01:c9:85:90:2f:d2:19:cc:d3:8d:7f:83:e9:09"
+      - checkout
+      - run:
+          name: Push Master to Production
+          command: |
+            git push git@github.com:snoopy55619819/scheduler.git master:production
 
 workflows:
   version: 2
