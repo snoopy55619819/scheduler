@@ -5,7 +5,9 @@ Interview Scheduler is a single-page application that lets you schedule an appoi
 A single-page REACT based scheduler that uses HTML, JSX and CSS/SASS along with some dependencies.
 
 
-!["Homepage of Interview Scheduler!"](https://github.com/snoopy55619819/tweeter/blob/master/public/images/Screen%20Shot%202021-12-21%20at%2010.29.19%20AM.png?raw=true)
+!["Homepage of Interview Scheduler!"](https://github.com/snoopy55619819/scheduler/blob/master/public/images/homepage.png?raw=true)
+
+!["Add/Edit sections"](https://github.com/snoopy55619819/scheduler/blob/master/public/images/show-create.png?raw=true)
 
 ___
 ## Getting Started
@@ -53,11 +55,11 @@ npm start
 
 ## Dependencies
 
+- React
+- React-Dom
 - Express
-- Node 5.10.x or above
-- Body parser
-- Chance
-- Md5
+- Node v12.22.5
+- Axios
 
 # Development/Testing
 ## Running Jest Test Framework
