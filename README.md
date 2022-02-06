@@ -1,6 +1,6 @@
 # Interview Scheduler Project
 
-Interview Scheduler is a single-page application that lets you schedule an appointment at a time and interviewer of choosing.
+Interview Scheduler is a single-page application that lets you schedule an appointment at a time and interviewer of choosing. Back-end can be found here [scheduler-api](https://github.com/snoopy55619819/scheduler-api).
 
 A single-page REACT based scheduler that uses HTML, JSX and CSS/SASS along with some dependencies.
 
@@ -33,7 +33,7 @@ ___
 
 ## 2 - Using the application locally
 
-1. Fork/clone the [scheduler-api](https://github.com/snoopy55619819/scheduler-api) repo and follow steps there to setup the api server.
+1. Fork/clone the [scheduler-api](https://github.com/snoopy55619819/scheduler-api) repo and follow steps there to setup the api server. Ensure to navigate to http://localhost:8001/api/debug/reset to reset the database after you get the api server running.
 
 2. Fork/Clone the [Interview Scheduler](https://github.com/snoopy55619819/scheduler) repo to your local device.
 ```js
