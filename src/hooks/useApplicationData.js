@@ -35,6 +35,66 @@ export default function useApplicationData() {
 
   }, [])
 
+  // bookInterview to save new interview to appointments when created
+  function bookInterview(id, interview) {
+    const notEditingInterview = !state.appointments[id].interview;
+    // create copy
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    // copy appointments and update appointment with new interview
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    // Add appointment to API and update state with new appointments data
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then(() => {
+        
+        // Update spots count for daysList when an appointment is booked.
+        const updatedDays = state.days.map(day => {
+          return {...day, spots: ((day.name === state.day && notEditingInterview)? day.spots - 1 : day.spots)}
+        });
+
+        setState({...state, appointments, days: updatedDays});
+      })
+  }
+  
+  // delete interviews
+  function cancelInterview(id) {
+
+    return axios.delete(`/api/appointments/${id}`)
+      .then(() => {
+        const appointment = {
+          ...state.appointments[id],
+          interview: null
+        };
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment
+        }
+        // Update spots count for days list when an appointment is cancelled.
+        const updatedDays = state.days.map(day => {
+          return {...day, spots: (day.name === state.day ? day.spots + 1 : day.spots)}
+        });
+
+        setState({...state, appointments, days: updatedDays})
+      })
+  }
+
+  return {
+    state,
+    setDay,
+    bookInterview,
+    cancelInterview
+  }
+}
+
+
+
   // *****************************************************************
   // Code for websocket implementation. Has a bug somewhere, so commenting out
   //  until issue resolved. Rest of application and required functionality 
@@ -95,61 +155,3 @@ export default function useApplicationData() {
   //   }
   // }, []);
   // ***************************************************************** 
-
-  // bookInterview to save new interview to appointments when created
-  function bookInterview(id, interview) {
-    const notEditingInterview = !state.appointments[id].interview;
-    // create copy
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-
-    // copy appointments and update appointment with new interview
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-
-    // Add appointment to API and update state with new appointments data
-    return axios.put(`/api/appointments/${id}`, appointment)
-      .then(() => {
-        
-        // Update spots count for daysList when an appointment is booked.
-        const updatedDays = state.days.map(day => {
-          return {...day, spots: ((day.name === state.day && notEditingInterview)? day.spots - 1 : day.spots)}
-        });
-
-        setState({...state, appointments, days: updatedDays});
-      })
-  }
-  
-  // delete interviews
-  function cancelInterview(id) {
-
-    return axios.delete(`/api/appointments/${id}`)
-      .then(() => {
-        const appointment = {
-          ...state.appointments[id],
-          interview: null
-        };
-        const appointments = {
-          ...state.appointments,
-          [id]: appointment
-        }
-        // Update spots count for days list when an appointment is cancelled.
-        const updatedDays = state.days.map(day => {
-          return {...day, spots: (day.name === state.day ? day.spots + 1 : day.spots)}
-        });
-
-        setState({...state, appointments, days: updatedDays})
-      })
-  }
-
-  return {
-    state,
-    setDay,
-    bookInterview,
-    cancelInterview
-  }
-}
